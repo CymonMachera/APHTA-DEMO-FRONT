@@ -37,18 +37,21 @@ export class HomeComponent implements OnInit {
   chartOption2 : EChartsOption
   
   filter_form = this.fb.group({
-    region: ['']
+    region: [''],
+    district: ['']
   })
 
   region 
   district
-  facility
+  ward
 
   regionValue
   districtValue
+  wardValue
 
   Clint_data: clientArray[]
   region_data: clientArray[]
+  district_data: clientArray[]
 
   dynamicData
   ngOnInit(){
@@ -73,7 +76,7 @@ export class HomeComponent implements OnInit {
           acc[it.region] = acc[it.region] + 1 || 1;
           return acc;
         }, {});
-        console.log(groupByLocaton)
+      
         this.region = groupByLocaton
 
         this.chartOption= {
@@ -172,10 +175,35 @@ export class HomeComponent implements OnInit {
             },
           ]
         
-        this.dynamicData = this.chartOption2
-        this.dynamicData.series = [];
-        this.dynamicData.series.push(series); 
-       
+          this.dynamicData = {
+            tooltip : {
+              trigger: 'axis'
+            },
+            legend: {
+                top: '5%',
+                left: 'center'
+            },
+            yAxis: {
+              type: 'category',
+              data: Object.keys(groupByDistrict),
+              
+              axisLabel: {
+                interval: 0,
+                rotate: 30 //If the label names are too long you can manage this by rotating the label.
+                
+              }
+            },
+            xAxis: {
+              type: 'value',
+            },
+            series: [
+              {
+                data: Object.values(groupByDistrict),
+                type: 'bar',
+                
+              },
+            ],
+          }
           
       } else {
         this.regionValue = null;
@@ -183,4 +211,55 @@ export class HomeComponent implements OnInit {
       }
     }
 
+    onChangeDistrict(districtValue: any) {
+      if (districtValue) {
+        
+            this.districtValue = districtValue;
+            console.log("the ward values are ", districtValue)
+
+            // Dealing with districts
+        this.district_data = this.region_data.filter(it => it.district == this.districtValue)
+
+        const groupByWard = this.district_data.reduce((acc, it) => {
+          acc[it.ward] = acc[it.ward] + 1 || 1;
+          return acc;
+        }, {});
+        console.log(groupByWard)
+        this.ward = groupByWard
+        
+          this.dynamicData = {
+            tooltip : {
+              trigger: 'axis'
+            },
+            legend: {
+                top: '5%',
+                left: 'center'
+            },
+            yAxis: {
+              type: 'category',
+              data: Object.keys(groupByWard),
+              
+              axisLabel: {
+                interval: 0,
+                rotate: 30 //If the label names are too long you can manage this by rotating the label.
+                
+              }
+            },
+            xAxis: {
+              type: 'value',
+            },
+            series: [
+              {
+                data: Object.values(groupByWard),
+                type: 'bar',
+                
+              },
+            ],
+          }
+          
+      } else {
+        this.districtValue = null;
+        
+      }
+    }
 }
