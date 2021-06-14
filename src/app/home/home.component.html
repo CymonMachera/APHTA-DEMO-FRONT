@@ -1,0 +1,71 @@
+<mat-toolbar>
+  <div class="div-a">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>APHTA</span>
+  </div>
+  <div class="div-a">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>home</mat-icon>
+    </button>
+    <span>Home</span>
+  </div>
+
+  <div class="div-a">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>add</mat-icon>
+    </button>
+    <span>Add CHW</span>
+  </div>
+  <div class="div-a">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>location_on</mat-icon>
+    </button>
+    <span>Geographical Location</span>
+  </div>
+  <div class="div-a">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>reorder</mat-icon>
+    </button>
+    <span>Report</span>
+  </div>
+ <div class="div-a">
+  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>person</mat-icon>
+  </button>
+  <span>Account</span>
+ </div>
+  <div class="div-a">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>logout</mat-icon>
+    </button>
+    <span>Logout</span>
+  </div>
+</mat-toolbar>
+
+<mat-toolbar-row>
+<form [formGroup] = "filter_form">
+  <mat-form-field class="fieldCss" appearance="fill">
+    <mat-label> Region</mat-label>
+    <mat-select  formControlName="region" (selectionChange)="onChangeRegion($event.value)" >
+      <mat-option *ngFor="let region of region | keyvalue"  [value]="region.key">{{region.key}}</mat-option>
+      <mat-option default='Mwanza'></mat-option>
+    </mat-select>
+    <mat-icon matSuffix>person</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field class="fieldCss" appearance="fill">
+    <mat-label> Disrict</mat-label>
+    <mat-select  formControlName="region" >
+      <mat-option *ngFor="let district of district | keyvalue"  [value]="district.key">{{district.key}}</mat-option>
+    </mat-select>
+    <mat-icon matSuffix>person</mat-icon>
+  </mat-form-field>
+</form>
+</mat-toolbar-row>
+
+<div class="graphs">
+  <div echarts [options]="chartOption" class="demo-chart"></div>
+  <div echarts [options]="chartOption2" [merge]= "dynamicData" class="demo-chart"></div>
+</div>

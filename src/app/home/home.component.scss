@@ -1,0 +1,29 @@
+.div-a {
+    flex: 1 1 auto;
+    justify-content: space-evenly;
+  }
+
+mat-toolbar{
+  background-color:primary;
+}
+
+mat-toolbar-row{
+  padding:2vh ;
+  background-color: accent;
+  justify-content: space-evenly; 
+}
+mat-form-field{
+  padding-left: 2vh;
+  padding-right: 2vh;
+  width: fit-content;
+}
+
+.demo-chart {
+  height: 70vh;
+  width:80vh;
+}
+
+.graphs{
+  display: flex;
+  justify-content: space-evenly;
+}
