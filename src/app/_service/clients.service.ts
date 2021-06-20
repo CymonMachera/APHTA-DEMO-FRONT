@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
+const BASE_URL = environment.base_url
 
-const BASE_URL = 'https://aphta.herokuapp.com/'
 @Injectable({
   providedIn: 'root'
 })

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'aphta-front';
+
+  constructor(private router : Router){}
+  chw(){
+    this.router.navigateByUrl('/chw');
+  }
+  home(){
+    this.router.navigateByUrl('/home');
+  }
 
 }
 

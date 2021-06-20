@@ -1,0 +1,30 @@
+mat-toolbar{
+    justify-content: space-between;
+    font-weight: normal;
+    font-size: medium;
+    height: 45px;
+    padding:0px ;
+  }
+  
+  mat-table {
+    width: 100%;
+    margin: 5px;
+    padding-right: 1rem;
+      
+  }
+  
+  td, th {
+  width: 25%;
+  }
+  
+  .mat-row:hover {
+      background: whitesmoke;
+      cursor: pointer;
+    }
+  
+    ::ng-deep .small-input.mat-form-field-appearance-outline .mat-form-field-infix {
+      padding: .25em 0 .75em 0;
+      font-size: 12px;
+    }
+    ::ng-deep .small-input.mat-form-field-appearance-outline .mat-form-field-infix .mat-select-arrow{margin-top: 10px;}
+    ::ng-deep .small-input.mat-form-field-appearance-outline .mat-select-empty + .mat-form-field-label-wrapper .mat-form-field-label{margin-top: -0.75em;}
