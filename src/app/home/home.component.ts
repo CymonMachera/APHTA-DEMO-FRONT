@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { EChartsOption } from 'echarts';
 import { ClientsService } from '../_service/clients.service';
@@ -52,8 +52,145 @@ export class HomeComponent implements OnInit {
   Clint_data: clientArray[]
   region_data: clientArray[]
   district_data: clientArray[]
-
+  ageValue: clientArray[]
   dynamicData
+  dynamicData_age
+
+  ageGroups(client){
+    this.ageValue = client
+    let res = this.ageValue.filter(it => it.age >=15 && it.age <20)
+    let reso = this.ageValue.filter(it => it.age >=20 && it.age <25)
+    let reson = this.ageValue.filter(it => it.age >=25 && it.age <30)
+    let resoni = this.ageValue.filter(it => it.age >=30)
+
+    // Create an array containing the values of the age groups
+    let   age_group: any[] ;
+    age_group = [res.length, reso.length, reson.length, resoni.length]
+    this.age_group_values = age_group
+  }
+
+  // Function to plot the initial graph
+  initialGraphs(value1, value2){
+    this.chartOption= {
+      tooltip : {
+        trigger: 'axis'
+      },
+      legend: {
+          top: '5%',
+          left: 'center'
+      },
+      yAxis: {
+        type: 'category',
+        data: ['15 - 19', '20 - 24', '25 - 29', '30+'],
+      },
+      xAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          data: this.age_group_values,
+          type: 'bar',
+          
+        },
+      ],
+    };
+
+    this.chartOption2= {
+      tooltip : {
+        trigger: 'axis'
+      },
+      legend: {
+          top: '5%',
+          left: 'center'
+      },
+      yAxis: {
+        type: 'category',
+        data: value1,
+        
+        axisLabel: {
+          interval: 0,
+          rotate: 30 //If the label names are too long you can manage this by rotating the label.
+          
+        }
+      },
+      xAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          data: value2,
+          type: 'bar',
+          
+        },
+      ],
+    };
+  }
+
+  // Function to Update the age graph
+  updateGraph1(){
+    this.dynamicData_age = {
+      tooltip : {
+        trigger: 'axis'
+      },
+      legend: {
+          top: '5%',
+          left: 'center'
+      },
+      yAxis: {
+        type: 'category',
+        data: ['15 - 19', '20 - 24', '25 - 29', '30+'],
+        
+        axisLabel: {
+          interval: 0,
+          rotate: 30 //If the label names are too long you can manage this by rotating the label.
+          
+        }
+      },
+      xAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          data: this.age_group_values,
+          type: 'bar',
+          
+        },
+      ],
+    }
+  }
+  // Function to update the location graph
+  updateGraph2(value1, value2){
+    this.dynamicData = {
+      tooltip : {
+        trigger: 'axis'
+      },
+      legend: {
+          top: '5%',
+          left: 'center'
+      },
+      yAxis: {
+        type: 'category',
+        data: value1,
+        
+        axisLabel: {
+          interval: 0,
+          rotate: 30 //If the label names are too long you can manage this by rotating the label.
+          
+        }
+      },
+      xAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          data: value2,
+          type: 'bar',
+          
+        },
+      ],
+    }
+  }
+ 
   ngOnInit(){
     this.allClients()
     }
@@ -61,15 +198,7 @@ export class HomeComponent implements OnInit {
     allClients(){
       this.clientsService.allClients().subscribe(client =>{
         this.Clint_data = client
-        let res = this.Clint_data.filter(it => it.age >=15 && it.age <20)
-        let reso = this.Clint_data.filter(it => it.age >=20 && it.age <25)
-        let reson = this.Clint_data.filter(it => it.age >=25 && it.age <30)
-        let resoni = this.Clint_data.filter(it => it.age >=30)
-
-        // Create an array containing the values of the age groups
-        let   age_group: any[] ;
-        age_group = [res.length, reso.length, reson.length, resoni.length]
-        this.age_group_values = age_group
+        this.ageGroups(client)
         
         // count values in a particular location
         const groupByLocaton = this.Clint_data.reduce((acc, it) => {
@@ -79,61 +208,8 @@ export class HomeComponent implements OnInit {
       
         this.region = groupByLocaton
 
-        this.chartOption= {
-          tooltip : {
-            trigger: 'axis'
-          },
-          legend: {
-              top: '5%',
-              left: 'center'
-          },
-          yAxis: {
-            type: 'category',
-            data: ['15 - 19', '20 - 24', '25 - 29', '30+'],
-          },
-          xAxis: {
-            type: 'value',
-          },
-          series: [
-            {
-              data: this.age_group_values,
-              type: 'bar',
-              
-            },
-          ],
-        };
-
-        this.chartOption2= {
-          tooltip : {
-            trigger: 'axis'
-          },
-          legend: {
-              top: '5%',
-              left: 'center'
-          },
-          yAxis: {
-            type: 'category',
-            data: Object.keys(groupByLocaton),
-            
-            axisLabel: {
-              interval: 0,
-              rotate: 30 //If the label names are too long you can manage this by rotating the label.
-              
-            }
-          },
-          xAxis: {
-            type: 'value',
-          },
-          series: [
-            {
-              data: Object.values(groupByLocaton),
-              type: 'bar',
-              
-            },
-          ],
-        };
-
-
+        // Plot initial Graphs
+        this.initialGraphs(Object.keys(groupByLocaton),Object.values(groupByLocaton))
       })
     }
   
@@ -141,11 +217,9 @@ export class HomeComponent implements OnInit {
     onChangeRegion(regionValue: any) {
       if (regionValue) {
         
-            this.regionValue = regionValue;
-            this.districtValue = null;
-
-            console.log("the valu is ", regionValue)
-
+        this.regionValue = regionValue;
+        this.districtValue = null;
+        
             // Dealing with districts
         this.region_data = this.Clint_data.filter(it => it.region == this.regionValue)
 
@@ -153,58 +227,14 @@ export class HomeComponent implements OnInit {
           acc[it.district] = acc[it.district] + 1 || 1;
           return acc;
         }, {});
-        console.log(groupByDistrict)
+  
         this.district = groupByDistrict
+ 
+        this.updateGraph2(Object.keys(groupByDistrict), Object.values(groupByDistrict))
 
-       let  y_axis = {
-          type: 'category',
-          data: Object.keys(groupByDistrict),
-          
-          axisLabel: {
-            interval: 0,
-            rotate: 30 //If the label names are too long you can manage this by rotating the label.
-            
-              }
-          }
-
-        let  series = [
-            {
-              data: Object.values(groupByDistrict),
-              type: 'bar',
-              
-            },
-          ]
-        
-          this.dynamicData = {
-            tooltip : {
-              trigger: 'axis'
-            },
-            legend: {
-                top: '5%',
-                left: 'center'
-            },
-            yAxis: {
-              type: 'category',
-              data: Object.keys(groupByDistrict),
-              
-              axisLabel: {
-                interval: 0,
-                rotate: 30 //If the label names are too long you can manage this by rotating the label.
-                
-              }
-            },
-            xAxis: {
-              type: 'value',
-            },
-            series: [
-              {
-                data: Object.values(groupByDistrict),
-                type: 'bar',
-                
-              },
-            ],
-          }
-          
+        // Deal wiht age groups
+        this.ageGroups(this.region_data)
+        this.updateGraph1()
       } else {
         this.regionValue = null;
         this.districtValue = null;
@@ -214,52 +244,22 @@ export class HomeComponent implements OnInit {
     onChangeDistrict(districtValue: any) {
       if (districtValue) {
         
-            this.districtValue = districtValue;
-            console.log("the ward values are ", districtValue)
-
-            // Dealing with districts
+        this.districtValue = districtValue;
+  
+        // Dealing with Wards
         this.district_data = this.region_data.filter(it => it.district == this.districtValue)
 
         const groupByWard = this.district_data.reduce((acc, it) => {
           acc[it.ward] = acc[it.ward] + 1 || 1;
           return acc;
         }, {});
-        console.log(groupByWard)
-        this.ward = groupByWard
-        
-          this.dynamicData = {
-            tooltip : {
-              trigger: 'axis'
-            },
-            legend: {
-                top: '5%',
-                left: 'center'
-            },
-            yAxis: {
-              type: 'category',
-              data: Object.keys(groupByWard),
-              
-              axisLabel: {
-                interval: 0,
-                rotate: 30 //If the label names are too long you can manage this by rotating the label.
-                
-              }
-            },
-            xAxis: {
-              type: 'value',
-            },
-            series: [
-              {
-                data: Object.values(groupByWard),
-                type: 'bar',
-                
-              },
-            ],
-          }
-          
+        // Update the  graph 
+        this.updateGraph2(Object.keys(groupByWard), Object.values(groupByWard))
+        // Deal wiht age groups
+        this.ageGroups(this.district_data)
+        this.updateGraph1()
       } else {
-        this.districtValue = null;
-        
+        this.districtValue = null;       
       }
     }
 }

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'aphta-front';
 
+  isLoggedIn: true; 
   constructor(private router : Router){}
   chw(){
     this.router.navigateByUrl('/chw');

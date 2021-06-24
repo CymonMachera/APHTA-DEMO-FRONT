@@ -22,7 +22,8 @@ import { FormComponent } from './chw/form/form.component';
     HomeComponent,
     ChwComponent,
     SelectedChwComponent,
-    FormComponent
+    FormComponent,
+
   ],
   imports: [
     BrowserModule,

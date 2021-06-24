@@ -20,6 +20,6 @@
 </mat-toolbar-row>
 
 <div class="graphs">
-  <div echarts [options]="chartOption" class="demo-chart"></div>
+  <div echarts [options]="chartOption" [merge]= "dynamicData_age" class="demo-chart"></div>
   <div echarts [options]="chartOption2" [merge]= "dynamicData" class="demo-chart"></div>
 </div>
